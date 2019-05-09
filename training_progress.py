@@ -27,29 +27,29 @@ class Writer:
 
         # If there is already data present, assume we are appending to the existing data.
         if os.path.exists(self.full_path):
-            data = pd.read_csv(self.full_path)
+            self.data = pd.read_csv(self.full_path)
 
             for col in cols:
                 if col not in list(data.columns.values):
                     raise RuntimeError('Given columns does not match data currently available. Delete file or try again.')
 
         else:
-            data = pd.DataFrame(columns=cols)
+            self.data = pd.DataFrame(columns=cols)
 
 
     def write(self, new_data: list) -> None:
         '''Write heterogeneous data to the dataframe and save it.'''
 
         # Write the data.
-        data.loc[data.size] = new_data
+        self.data.loc[self.data.size] = new_data
 
         # Save the data in a thread.
-        threading.Thread(target=data.to_csv, args=[self.full_path]).start()
+        threading.Thread(target=self.data.to_csv, args=[self.full_path]).start()
 
 
     def loss(self) -> float:
         '''Return the average loss from the last 10 iterations.'''
-        return data['loss'].iloc[-10:].mean()
+        return self.data['loss'].iloc[-10:].mean()
 
 
 
