@@ -52,18 +52,3 @@ class Writer:
         return self.data['loss'].iloc[-10:].mean()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
